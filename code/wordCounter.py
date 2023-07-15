@@ -25,3 +25,5 @@ wordDict = atd(words)
 
 for key in wordDict:
     print(wordDict[key])
+
+# print(wordDict)
