@@ -1,7 +1,15 @@
+# pylint: disable=invalid-name
+# pylint: disable=missing-function-docstring
+# pylint: disable=missing-module-docstring
+# pylint: disable=trailing-whitespace
+
 from pathlib import Path
 import sqlite3
 from tabulate import tabulate
 
+def wordFilterAndModifier(word : str):
+    modifiedWord = word
+    return modifiedWord
 
 def getWordList(filePath : Path):
     '''
@@ -17,7 +25,8 @@ def getWordList(filePath : Path):
 
     for line in lines:
         # print(line.rstrip("\n"))
-        if line[0] == '#' : continue # '#' at the begging of the line in a .txt file defines comment
+        if line[0] == '#' :
+            continue # '#' at the begging of the line in a .txt file defines comment
         words += line.rstrip("\n").split()
 
     return words
@@ -32,15 +41,15 @@ def addToDict(words: list[str]):
     Corrosponding to each key there is a dictinary of the words where,
     keys are the words and values are the number of their occurences.
     '''
-    wordDict = dict()
+    wordDict = {}
     for word in words:
 
-        word = word.lower()
+        word = wordFilterAndModifier(word.lower())
         key = word[0:2]
 
         if wordDict.get(key) is None:
             wordDict[key] = {word : 1}
-        
+                   
         else:
 
             if wordDict[key].get(word) is None:
@@ -64,19 +73,21 @@ def writeToDatabase(dbPath : Path, wordDict : dict[str, dict[str, int]], textNam
     crsr.execute(f"CREATE TABLE IF NOT EXISTS {textName} (id INT, word TEXT, count INT)")
 
     sortedKeysWD = sorted(wordDict.keys())
-    id = 1
+    wordId = 1
     for index in sortedKeysWD:
         indexDict = wordDict[index]
         sortedKeysID = sorted(indexDict)
 
         for word in sortedKeysID:
-            crsr.execute(f"INSERT INTO {textName} (id, word, count) VALUES (?, ?, ?)", (id, word, indexDict[word]))
+            crsr.execute(f"INSERT INTO {textName} \
+            (id, word, count) VALUES (?, ?, ?)", (wordId, word, indexDict[word]))
+            wordId += 1
 
     con.commit()
     con.close()
     print("Database Modified.")
 
-    return
+    # return
 
 def printTableWithDeleteOption(
     dbPath : Path,
@@ -96,5 +107,5 @@ def printTableWithDeleteOption(
     print(tabulate(rows, headers=columns, tablefmt="grid"))
 
     con.close()
-    dbPath.unlink()
-
+    if delete:
+        dbPath.unlink()

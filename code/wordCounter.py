@@ -1,8 +1,16 @@
+# pylint: disable=invalid-name
+# pylint: disable=missing-function-docstring
+# pylint: disable=missing-module-docstring
+# pylint: disable=trailing-whitespace
+# pylint: disable=import-error
+
+
+from pathlib import Path
 from support import getWordList as gwl
 from support import addToDict as atd
 from support import writeToDatabase as wtd
 from support import printTableWithDeleteOption as ptwdo
-from pathlib import Path
+
 
 inputFilePath = Path("texts/alice.txt") # input("Path to file :") #file path input
 dbPath = Path("database/database.db") # input("Path to database :") #path to database
