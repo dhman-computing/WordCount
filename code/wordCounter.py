@@ -3,8 +3,10 @@
 # pylint: disable=missing-module-docstring
 # pylint: disable=trailing-whitespace
 # pylint: disable=import-error
+# pylint: disable=f-string-without-interpolation
+# pylint: disable=line-too-long
 
-
+from datetime import datetime
 from pathlib import Path
 from support import getWordList as gwl
 from support import addToDict as atd
@@ -12,8 +14,9 @@ from support import writeToDatabase as wtd
 from support import printTableWithDeleteOption as ptwdo
 
 
+currentTime = datetime.now().strftime(f"%Y-%m-%d-%H-%M-%S")
 inputFilePath = Path("texts/alice.txt") # input("Path to file :") #file path input
-dbPath = Path("database/database.db") # input("Path to database :") #path to database
+dbPath = Path(f"database/database-{currentTime[2:]}.db") # input("Path to database :") #path to database
 textName = inputFilePath.name[0:inputFilePath.name.index('.')]
 
 # runtime = 0
@@ -42,7 +45,7 @@ for key in wordDict:
 
 count = wtd(dbPath, wordDict, textName)
 
-ptwdo(dbPath, textName, delete=True)
+ptwdo(dbPath, textName)
 
 print(f"Total number of words in the test is {count}")
 

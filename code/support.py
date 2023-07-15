@@ -2,7 +2,10 @@
 # pylint: disable=missing-function-docstring
 # pylint: disable=missing-module-docstring
 # pylint: disable=trailing-whitespace
+# pylint: disable=f-string-without-interpolation
+# pylint: disable=unspecified-encoding
 
+from datetime import datetime
 from pathlib import Path
 import sqlite3
 from tabulate import tabulate
@@ -20,8 +23,17 @@ def wordFilterAndModifier(word : str):
             else:
                 modifiedWord = word
         
-        elif ((97 <= ool <= 122) or (ool == 8217) or (ool == 39)): 
+        elif 97 <= ool <= 122: 
             modifiedWord += letter
+
+    if len(word) >= 2:
+
+        if ((ord(word[-2]) == 8217) or (word[-2] == "'")):
+            modifiedWord = modifiedWord[0:-2] + "'" + modifiedWord[-1]
+
+        if ((ord(word[0]) == 8217) or (word[0] == "'")):
+            modifiedWord = "'" + modifiedWord
+
     return modifiedWord
 
 def getWordList(filePath : Path):
@@ -109,8 +121,7 @@ def writeToDatabase(dbPath : Path, wordDict : dict[str, dict[str, int]], textNam
 
 def printTableWithDeleteOption(
     dbPath : Path,
-    tableName : str,
-    delete: bool = False):
+    tableName : str):
     '''
     This function takes a database path and name of a table as input
     and prints out a table after that we can also enable it to delete
@@ -122,8 +133,13 @@ def printTableWithDeleteOption(
     crsr.execute(f"SELECT * FROM {tableName}")
     rows = crsr.fetchall()
     columns = [desc[0] for desc in crsr.description]
-    print(tabulate(rows, headers=columns, tablefmt="grid"))
+    table = tabulate(rows, headers=columns, tablefmt="grid")
+    print(table)
+
+    currentTime = datetime.now().strftime(f"%Y-%m-%d-%H-%M-%S")
+    pathToTextFile = Path(f"table/{tableName}-{currentTime[2:]}.txt")
+
+    with pathToTextFile.open("w") as file:
+        file.write(table)
 
     con.close()
-    if delete:
-        dbPath.unlink()
