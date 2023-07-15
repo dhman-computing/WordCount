@@ -10,6 +10,7 @@ from pathlib import Path
 import sqlite3
 from tabulate import tabulate
 
+
 def wordFilterAndModifier(word : str):
     '''
     This function takes a word and removes anything other than letter or "'" in it.
@@ -35,6 +36,7 @@ def wordFilterAndModifier(word : str):
             modifiedWord = "'" + modifiedWord
 
     return modifiedWord
+
 
 def getWordList(filePath : Path):
     '''
@@ -88,6 +90,7 @@ def addToDict(words: list[str]):
 
     return wordDict
 
+
 def writeToDatabase(dbPath : Path, wordDict : dict[str, dict[str, int]], textName : str):
     '''
     This function takes a dictinary where values are dictinary 
@@ -118,6 +121,7 @@ def writeToDatabase(dbPath : Path, wordDict : dict[str, dict[str, int]], textNam
     print("Database Modified.")
 
     return count
+
 
 def printTableWithDeleteOption(
     dbPath : Path):
@@ -151,3 +155,15 @@ def printTableWithDeleteOption(
             file.write(table)
 
     con.close()
+
+
+def getFileNamesInADirectory(dirPath : Path):
+    '''
+    Gives the Path to files in a directory as a list
+    '''
+    filePaths = []
+    for filePath in dirPath.iterdir():
+        if filePath.is_file():
+            filePaths.append(filePath)
+    
+    return filePaths

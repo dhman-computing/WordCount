@@ -12,41 +12,47 @@ from support import getWordList as gwl
 from support import addToDict as atd
 from support import writeToDatabase as wtd
 from support import printTableWithDeleteOption as ptwdo
+from support import getFileNamesInADirectory as gfniad
 
 
 currentTime = datetime.now().strftime(f"%Y-%m-%d-%H-%M-%S")
-inputFilePath = Path("texts/alice.txt") # input("Path to file :") #file path input
 dbPath = Path(f"database/database-{currentTime[2:]}.db") # input("Path to database :") #path to database
-textName = inputFilePath.name[0:inputFilePath.name.index('.')]
 
-# runtime = 0
-# for line in lines:
-#     if runtime >= 10 : break
-#     print(line)
-#     print(line.split())
-#     runtime += 1
+inputDirPath = Path("texts") # input("Path to file :") #file path input
+filePathList = gfniad(inputDirPath)
 
-words = gwl(inputFilePath)
+count : int = 0
+for inputFilePath in filePathList:
+    textName = inputFilePath.name[0:inputFilePath.name.index('.')]
 
-# print(words)
+    # runtime = 0
+    # for line in lines:
+    #     if runtime >= 10 : break
+    #     print(line)
+    #     print(line.split())
+    #     runtime += 1
 
-wordDict = atd(words)
+    words = gwl(inputFilePath)
 
-# outputFilePath = "result/res002.txt"
+    # print(words)
 
-# with open(outputFilePath, "w") as file:
-#     for i in words:
-#         file.write(i+'\n')
+    wordDict = atd(words)
 
-# for key in wordDict:
-#     print(wordDict[key])
+    # outputFilePath = "result/res002.txt"
 
-# print(f"Total number of words in the test is {count}")
+    # with open(outputFilePath, "w") as file:
+    #     for i in words:
+    #         file.write(i+'\n')
 
-count = wtd(dbPath, wordDict, textName)
+    # for key in wordDict:
+    #     print(wordDict[key])
 
-ptwdo(dbPath)
+    # print(f"Total number of words in the test is {count}")
 
-print(f"Total number of words in the test is {count}")
+    count += wtd(dbPath, wordDict, textName)
 
-# print(wordDict)
+    ptwdo(dbPath)
+
+    print(f"Total number of words in the test is {count}")
+
+    # print(wordDict)
