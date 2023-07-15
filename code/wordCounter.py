@@ -2,7 +2,7 @@ from support import getWordList as gwl
 from support import addToDict as atd
 from pathlib import Path
 
-inputFilePath = Path("texts/test.txt") # input("Path to file :") #file path input
+inputFilePath = Path("texts/alice.txt") # input("Path to file :") #file path input
 
 # runtime = 0
 # for line in lines:
@@ -12,12 +12,15 @@ inputFilePath = Path("texts/test.txt") # input("Path to file :") #file path inpu
 #     runtime += 1
 
 words = gwl(inputFilePath)
+count = len(words)
+
+
 
 # print(words)
 
 wordDict = atd(words)
 
-# outputFilePath = "result/res001.txt"
+# outputFilePath = "result/res002.txt"
 
 # with open(outputFilePath, "w") as file:
 #     for i in words:
@@ -25,5 +28,7 @@ wordDict = atd(words)
 
 for key in wordDict:
     print(wordDict[key])
+
+print(f"Total number of words in the test is {count}")
 
 # print(wordDict)
