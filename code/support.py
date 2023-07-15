@@ -120,8 +120,7 @@ def writeToDatabase(dbPath : Path, wordDict : dict[str, dict[str, int]], textNam
     return count
 
 def printTableWithDeleteOption(
-    dbPath : Path,
-    tableName : str):
+    dbPath : Path):
     '''
     This function takes a database path and name of a table as input
     and prints out a table after that we can also enable it to delete
@@ -130,16 +129,22 @@ def printTableWithDeleteOption(
     con = sqlite3.connect(dbPath.as_posix())
 
     crsr = con.cursor()
-    crsr.execute(f"SELECT * FROM {tableName}")
-    rows = crsr.fetchall()
-    columns = [desc[0] for desc in crsr.description]
-    table = tabulate(rows, headers=columns, tablefmt="grid")
-    print(table)
+    crsr.execute("SELECT name FROM sqlite_master WHERE type='table';")
+    tables = crsr.fetchall()  
 
-    currentTime = datetime.now().strftime(f"%Y-%m-%d-%H-%M-%S")
-    pathToTextFile = Path(f"table/{tableName}-{currentTime[2:]}.txt")
+    for tableName in tables:
 
-    with pathToTextFile.open("w") as file:
-        file.write(table)
+        tableName = tableName[0]
+        crsr.execute(f"SELECT * FROM {tableName}")
+        rows = crsr.fetchall()
+        columns = [desc[0] for desc in crsr.description]
+        table = tabulate(rows, headers=columns, tablefmt="grid")
+        # print(table)
+
+        currentTime = datetime.now().strftime(f"%Y-%m-%d-%H-%M-%S")
+        pathToTextFile = Path(f"table/{tableName}-{currentTime[2:]}.txt")
+
+        with pathToTextFile.open("w") as file:
+            file.write(table)
 
     con.close()

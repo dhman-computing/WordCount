@@ -38,14 +38,14 @@ wordDict = atd(words)
 #     for i in words:
 #         file.write(i+'\n')
 
-for key in wordDict:
-    print(wordDict[key])
+# for key in wordDict:
+#     print(wordDict[key])
 
 # print(f"Total number of words in the test is {count}")
 
 count = wtd(dbPath, wordDict, textName)
 
-ptwdo(dbPath, textName)
+ptwdo(dbPath)
 
 print(f"Total number of words in the test is {count}")
 
