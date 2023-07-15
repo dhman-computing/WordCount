@@ -21,6 +21,9 @@ dbPath = Path(f"database/database-{currentTime[2:]}.db") # input("Path to databa
 inputDirPath = Path("texts") # input("Path to file :") #file path input
 filePathList = gfniad(inputDirPath)
 
+tableDirectory = Path(f"table/Tables-{currentTime}")
+tableDirectory.mkdir()
+
 count : int = 0
 for inputFilePath in filePathList:
     textName = inputFilePath.name[0:inputFilePath.name.index('.')]
@@ -51,8 +54,8 @@ for inputFilePath in filePathList:
 
     count += wtd(dbPath, wordDict, textName)
 
-    ptwdo(dbPath)
+    ptwdo(dbPath, tableDirectory)
 
-    print(f"Total number of words in the test is {count}")
+    print(f"Total number of words in the database is {count}")
 
     # print(wordDict)

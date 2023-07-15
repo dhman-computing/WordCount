@@ -5,7 +5,7 @@
 # pylint: disable=f-string-without-interpolation
 # pylint: disable=unspecified-encoding
 
-from datetime import datetime
+
 from pathlib import Path
 import sqlite3
 from tabulate import tabulate
@@ -27,10 +27,13 @@ def wordFilterAndModifier(word : str):
         elif 97 <= ool <= 122: 
             modifiedWord += letter
 
-    if len(word) >= 2:
+    if len(modifiedWord) >= 2:
 
         if ((ord(word[-2]) == 8217) or (word[-2] == "'")):
+            # try:
             modifiedWord = modifiedWord[0:-2] + "'" + modifiedWord[-1]
+            # except:
+            #     print(modifiedWord)
 
         if ((ord(word[0]) == 8217) or (word[0] == "'")):
             modifiedWord = "'" + modifiedWord
@@ -124,7 +127,8 @@ def writeToDatabase(dbPath : Path, wordDict : dict[str, dict[str, int]], textNam
 
 
 def printTableWithDeleteOption(
-    dbPath : Path):
+    dbPath : Path,
+    tableDirectory : Path):
     '''
     This function takes a database path and name of a table as input
     and prints out a table after that we can also enable it to delete
@@ -144,10 +148,6 @@ def printTableWithDeleteOption(
         columns = [desc[0] for desc in crsr.description]
         table = tabulate(rows, headers=columns, tablefmt="grid")
         # print(table)
-
-        currentTime = datetime.now().strftime(f"%Y-%m-%d-%H-%M-%S")
-        tableDirectory = Path(f"table/Tables-{currentTime}")
-        tableDirectory.mkdir()
 
         pathToTextFile = tableDirectory / Path(f"{tableName}.txt")
 
