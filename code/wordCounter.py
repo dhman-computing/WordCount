@@ -1,6 +1,7 @@
 from support import getWordList as gwl
+from pathlib import Path
 
-inputFilePath = "texts/test.txt" # input("Path to file :") #file path input
+inputFilePath = Path("texts/test.txt") # input("Path to file :") #file path input
 
 # runtime = 0
 # for line in lines:
