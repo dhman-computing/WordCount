@@ -143,6 +143,7 @@ def printTableWithDeleteOption(
 
         currentTime = datetime.now().strftime(f"%Y-%m-%d-%H-%M-%S")
         tableDirectory = Path(f"table/Tables-{currentTime}")
+        tableDirectory.mkdir()
 
         pathToTextFile = tableDirectory / Path(f"{tableName}.txt")
 
