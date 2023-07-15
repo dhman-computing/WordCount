@@ -1,5 +1,6 @@
 from pathlib import Path
 import sqlite3
+from tabulate import tabulate
 
 
 def getWordList(filePath : Path):
@@ -51,27 +52,49 @@ def addToDict(words: list[str]):
 
     return wordDict
 
-def writeToDatabase(wordDict : dict[str, dict[str, int]], textName : str):
-    dbPath = Path("database/database.db")
+def writeToDatabase(dbPath : Path, wordDict : dict[str, dict[str, int]], textName : str):
+    '''
+    This function takes a dictinary where values are dictinary 
+    and add them to a database named in dbPath at a table textName
+    '''
     con = sqlite3.connect(dbPath.as_posix())
 
     crsr = con.cursor()
-
-    textName = textName[0:textName.index('.')]
     
     crsr.execute(f"CREATE TABLE IF NOT EXISTS {textName} (id INT, word TEXT, count INT)")
 
     sortedKeysWD = sorted(wordDict.keys())
+    id = 1
     for index in sortedKeysWD:
         indexDict = wordDict[index]
         sortedKeysID = sorted(indexDict)
 
         for word in sortedKeysID:
-            crsr.execute(f"INSERT INTO {textName} (word, count) VALUES (?, ?)", (word, indexDict[word]))
+            crsr.execute(f"INSERT INTO {textName} (id, word, count) VALUES (?, ?, ?)", (id, word, indexDict[word]))
 
     con.commit()
     con.close()
     print("Database Modified.")
 
     return
+
+def printTableWithDeleteOption(
+    dbPath : Path,
+    tableName : str,
+    delete: bool = False):
+    '''
+    This function takes a database path and name of a table as input
+    and prints out a table after that we can also enable it to delete
+    the database.
+    '''
+    con = sqlite3.connect(dbPath.as_posix())
+
+    crsr = con.cursor()
+    crsr.execute(f"SELECT * FROM {tableName}")
+    rows = crsr.fetchall()
+    columns = [desc[0] for desc in crsr.description]
+    print(tabulate(rows, headers=columns, tablefmt="grid"))
+
+    con.close()
+    dbPath.unlink()
 

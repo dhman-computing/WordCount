@@ -1,9 +1,12 @@
 from support import getWordList as gwl
 from support import addToDict as atd
 from support import writeToDatabase as wtd
+from support import printTableWithDeleteOption as ptwdo
 from pathlib import Path
 
-inputFilePath = Path("texts/test.txt") # input("Path to file :") #file path input
+inputFilePath = Path("texts/alice.txt") # input("Path to file :") #file path input
+dbPath = Path("database/database.db") # path to database
+textName = inputFilePath.name[0:inputFilePath.name.index('.')]
 
 # runtime = 0
 # for line in lines:
@@ -32,6 +35,10 @@ for key in wordDict:
 
 print(f"Total number of words in the test is {count}")
 
-wtd(wordDict, inputFilePath.name)
+wtd(dbPath, wordDict, textName)
+
+ptwdo(dbPath, textName, delete=True)
+
+print(f"Total number of words in the test is {count}")
 
 # print(wordDict)
