@@ -51,12 +51,14 @@ def addToDict(words: list[str]):
 
     return wordDict
 
-def writeToDatabase(wordDict : dict, textName : str):
+def writeToDatabase(wordDict : dict[str, dict[str, int]], textName : str):
     dbPath = Path("database/database.db")
     con = sqlite3.connect(dbPath.as_posix())
 
     crsr = con.cursor()
 
+    textName = textName[0:textName.index('.')]
+    
     crsr.execute(f"CREATE TABLE IF NOT EXISTS {textName} (id INT, word TEXT, count INT)")
 
     sortedKeysWD = sorted(wordDict.keys())

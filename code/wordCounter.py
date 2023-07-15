@@ -1,8 +1,9 @@
 from support import getWordList as gwl
 from support import addToDict as atd
+from support import writeToDatabase as wtd
 from pathlib import Path
 
-inputFilePath = Path("texts/alice.txt") # input("Path to file :") #file path input
+inputFilePath = Path("texts/test.txt") # input("Path to file :") #file path input
 
 # runtime = 0
 # for line in lines:
@@ -30,5 +31,7 @@ for key in wordDict:
     print(wordDict[key])
 
 print(f"Total number of words in the test is {count}")
+
+wtd(wordDict, inputFilePath.name)
 
 # print(wordDict)
