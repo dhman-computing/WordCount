@@ -1,7 +1,6 @@
-inputFilePath = "texts/test.txt" # input("Path to file :")
+from support import getWordList as gwl
 
-with open(inputFilePath, "r") as file:
-    lines = file.readlines()
+inputFilePath = "texts/test.txt" # input("Path to file :") #file path input
 
 # runtime = 0
 # for line in lines:
@@ -10,12 +9,7 @@ with open(inputFilePath, "r") as file:
 #     print(line.split())
 #     runtime += 1
 
-words = []
-
-for line in lines:
-    if line[0] == '#' : continue
-    words += line.split()
-
+words =gwl(inputFilePath)
 print(words)
 
 outputFilePath = "result/res001.txt"
