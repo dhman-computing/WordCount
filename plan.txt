@@ -1,0 +1,8 @@
+Overall : collect raw words from a .txt file, filter them and add them to a .db file alphabetically with the number of thei occurences.
+
+- collect file names stored in the texts folder
+- collect raw words from a .txt file #Done
+- filter them
+- add them to a dictinary alphabetically : here keys are the first two letters of the words and the values are the lists of words arrenged alphabetically
+- add the dictinary to database 
+
