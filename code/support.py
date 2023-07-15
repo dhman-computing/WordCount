@@ -8,7 +8,20 @@ import sqlite3
 from tabulate import tabulate
 
 def wordFilterAndModifier(word : str):
-    modifiedWord = word
+    '''
+    This function takes a word and removes anything other than letter or "'" in it.
+    '''
+    modifiedWord = ""
+    for letter in word:
+        ool : int = ord(letter)
+        if word[0:3] == "www":
+            if word[-1] == ".":
+                modifiedWord = word[0:-1]
+            else:
+                modifiedWord = word
+        
+        elif ((97 <= ool <= 122) or (ool == 8217) or (ool == 39)): 
+            modifiedWord += letter
     return modifiedWord
 
 def getWordList(filePath : Path):
@@ -45,6 +58,8 @@ def addToDict(words: list[str]):
     for word in words:
 
         word = wordFilterAndModifier(word.lower())
+        if word == '':
+            continue
         key = word[0:2]
 
         if wordDict.get(key) is None:
@@ -73,7 +88,9 @@ def writeToDatabase(dbPath : Path, wordDict : dict[str, dict[str, int]], textNam
     crsr.execute(f"CREATE TABLE IF NOT EXISTS {textName} (id INT, word TEXT, count INT)")
 
     sortedKeysWD = sorted(wordDict.keys())
+
     wordId = 1
+    count = 0
     for index in sortedKeysWD:
         indexDict = wordDict[index]
         sortedKeysID = sorted(indexDict)
@@ -82,12 +99,13 @@ def writeToDatabase(dbPath : Path, wordDict : dict[str, dict[str, int]], textNam
             crsr.execute(f"INSERT INTO {textName} \
             (id, word, count) VALUES (?, ?, ?)", (wordId, word, indexDict[word]))
             wordId += 1
+            count += indexDict[word]
 
     con.commit()
     con.close()
     print("Database Modified.")
 
-    # return
+    return count
 
 def printTableWithDeleteOption(
     dbPath : Path,

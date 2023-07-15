@@ -24,9 +24,6 @@ textName = inputFilePath.name[0:inputFilePath.name.index('.')]
 #     runtime += 1
 
 words = gwl(inputFilePath)
-count = len(words)
-
-
 
 # print(words)
 
@@ -41,9 +38,9 @@ wordDict = atd(words)
 for key in wordDict:
     print(wordDict[key])
 
-print(f"Total number of words in the test is {count}")
+# print(f"Total number of words in the test is {count}")
 
-wtd(dbPath, wordDict, textName)
+count = wtd(dbPath, wordDict, textName)
 
 ptwdo(dbPath, textName, delete=True)
 

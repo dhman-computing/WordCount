@@ -1,0 +1,7 @@
+This function gets a list of word and add them to a dicti0nary,
+where the keys of the dictinary are the first two letters of the word.
+Before adding to the dictinary the words are smallerd.
+The output is a dictinary of dictinaries.
+Corrosponding to each key there is a dictinary of the words where,
+keys are the words and values are the number of their occurences.
+'''
